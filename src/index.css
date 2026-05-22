@@ -1,0 +1,131 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Inter", sans-serif;
+  --breakpoint-wide: 980px;
+}
+
+@custom-variant landscape (@media (orientation: landscape) and (max-height: 500px) and (max-width: 1024px));
+
+/* Safe-area bottom padding for Android/iOS nav bar */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 12px);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Remove the focus ring when clicking/tapping */
+*:focus:not(:focus-visible) {
+  outline: none !important;
+}
+
+/* Pointer cursor on all buttons */
+button {
+  cursor: pointer;
+}
+
+body {
+  margin: 0;
+  background: #0a0a0f;
+  color: #ffffff;
+  font-family: system-ui, sans-serif;
+  overflow: hidden;
+}
+
+.lyrics-line {
+  transition: all 0.3s ease;
+}
+
+.lyrics-line.active {
+  color: #facc15;
+  text-shadow: 0 0 30px rgba(250, 204, 21, 0.5);
+  transform: scale(1.05);
+}
+
+.lyrics-line.past {
+  color: #6b7280;
+}
+
+.lyrics-line.upcoming {
+  color: #9ca3af;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(250, 204, 21, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(250, 204, 21, 0.6); }
+}
+
+.glow-pulse {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes slide-in {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.slide-in {
+  animation: slide-in 0.3s ease-out;
+}
+
+/* Animated equalizer bars — "now playing" indicator */
+@keyframes eq1 {
+  0%, 100% { height: 3px;  }
+  50%       { height: 14px; }
+}
+@keyframes eq2 {
+  0%, 100% { height: 10px; }
+  40%       { height: 3px;  }
+  80%       { height: 14px; }
+}
+@keyframes eq3 {
+  0%, 100% { height: 6px;  }
+  30%       { height: 14px; }
+  70%       { height: 3px;  }
+}
+@keyframes eq4 {
+  0%, 100% { height: 12px; }
+  25%       { height: 4px;  }
+  60%       { height: 14px; }
+}
+
+.eq-bar {
+  display: inline-block;
+  width: 3px;
+  border-radius: 2px;
+  background: #facc15;
+  transform-origin: bottom;
+}
+.eq-bar:nth-child(1) { animation: eq1 0.9s ease-in-out infinite; }
+.eq-bar:nth-child(2) { animation: eq2 0.9s ease-in-out infinite 0.15s; }
+.eq-bar:nth-child(3) { animation: eq3 0.9s ease-in-out infinite 0.3s; }
+.eq-bar:nth-child(4) { animation: eq4 0.9s ease-in-out infinite 0.45s; }
+@keyframes eq5 {
+  0%, 100% { height: 8px;  }
+  20% { height: 14px; }
+  55% { height: 3px;  }
+  80% { height: 11px; }
+}
+.eq-bar:nth-child(5) { animation: eq5 0.9s ease-in-out infinite 0.6s; }
+
+@keyframes note-spin {
+  from { transform: rotateY(0deg);   }
+  to { transform: rotateY(360deg); }
+}
+
+.note-spin {
+  display: inline-block;
+  animation: note-spin 1.2s linear infinite;
+  color: #d7be2f;
+}
