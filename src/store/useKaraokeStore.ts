@@ -6,6 +6,7 @@ interface KaraokeStore {
   queue: QueueItem[];
   currentSong: QueueItem | null;
   isPlaying: boolean;
+  playbackTime: number;
   showAddModal: boolean;
 
   addToQueue: (item: QueueItem) => void;
@@ -16,6 +17,7 @@ interface KaraokeStore {
   playNext: () => void;
   skipCurrent: () => void;
   setIsPlaying: (playing: boolean) => void;
+  setPlaybackTime: (t: number) => void;
   setShowAddModal: (visible: boolean) => void;
   startSong: (song: QueueItem) => void;
 }
@@ -26,6 +28,7 @@ export const useKaraokeStore = create<KaraokeStore>()(
       queue: [],
       currentSong: null,
       isPlaying: false,
+      playbackTime: 0,
       showAddModal: false,
 
       addToQueue: (item) =>
@@ -62,22 +65,23 @@ export const useKaraokeStore = create<KaraokeStore>()(
         }),
 
       startSong: (song) =>
-        set({ currentSong: song, isPlaying: true }),
+        set({ currentSong: song, isPlaying: true, playbackTime: 0 }),
 
       playNext: () => {
         const { queue } = get();
         if (!queue.length) {
-          set({ currentSong: null, isPlaying: false });
+          set({ currentSong: null, isPlaying: false, playbackTime: 0 });
           return;
         }
         const [next, ...rest] = queue;
-        set({ currentSong: next, queue: rest, isPlaying: true });
+        set({ currentSong: next, queue: rest, isPlaying: true, playbackTime: 0 });
       },
 
       // Alias for playNext — kept for semantic clarity at the call site
       skipCurrent: () => get().playNext(),
 
       setIsPlaying: (playing) => set({ isPlaying: playing }),
+      setPlaybackTime: (t) => set({ playbackTime: t }),
       setShowAddModal: (visible) => set({ showAddModal: visible }),
     }),
     {
@@ -86,6 +90,7 @@ export const useKaraokeStore = create<KaraokeStore>()(
         queue: s.queue,
         currentSong: s.currentSong,
         isPlaying: s.isPlaying,
+        playbackTime: s.playbackTime,
       }),
     }
   )

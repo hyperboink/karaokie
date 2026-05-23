@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useKaraokeStore } from '../store/useKaraokeStore';
 
-// YouTube IFrame API types
 interface YTPlayer {
   loadVideoById(videoId: string): void;
   playVideo(): void;
@@ -9,6 +8,8 @@ interface YTPlayer {
   setVolume(v: number): void;
   unMute(): void;
   destroy(): void;
+  getCurrentTime(): number;
+  seekTo(seconds: number, allowSeekAhead: boolean): void;
 }
 
 interface YTPlayerOptions {
@@ -58,21 +59,40 @@ function whenYouTubeReady(cb: () => void) {
 const EMBEDDING_DISABLED_CODES = new Set([101, 150]);
 const SKIP_DELAY_MS = 2500;
 
-// Component
-
 export default function YouTubePlayer() {
   const containerRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<YTPlayer | null>(null);
   const isTransitioningRef = useRef(false);
   const [skipMessage, setSkipMessage] = useState<string | null>(null);
 
-  const { currentSong, isPlaying, setIsPlaying, playNext } = useKaraokeStore();
+  const { currentSong, isPlaying, setIsPlaying, playNext, playbackTime, setPlaybackTime, showAddModal } = useKaraokeStore();
   const [isLoading, setIsLoading] = useState(true);
 
   const playNextRef = useRef(playNext);
   const setIsPlayingRef = useRef(setIsPlaying);
+  const playbackTimeRef = useRef(playbackTime);
+  const setPlaybackTimeRef = useRef(setPlaybackTime);
   useEffect(() => { playNextRef.current = playNext; }, [playNext]);
   useEffect(() => { setIsPlayingRef.current = setIsPlaying; }, [setIsPlaying]);
+  useEffect(() => { playbackTimeRef.current = playbackTime; }, [playbackTime]);
+  useEffect(() => { setPlaybackTimeRef.current = setPlaybackTime; }, [setPlaybackTime]);
+
+  // Save position when the add-song modal opens
+  useEffect(() => {
+    if (!showAddModal) return;
+    const t = playerRef.current?.getCurrentTime() ?? 0;
+    if (t > 0) setPlaybackTime(t);
+  }, [showAddModal]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Save position on page unload (refresh/close) so it can be restored
+  useEffect(() => {
+    const save = () => {
+      const t = playerRef.current?.getCurrentTime() ?? 0;
+      if (t > 0) setPlaybackTimeRef.current(t);
+    };
+    window.addEventListener('beforeunload', save);
+    return () => window.removeEventListener('beforeunload', save);
+  }, []);
 
   useEffect(() => { injectYouTubeApi(); }, []);
 
@@ -120,15 +140,20 @@ export default function YouTubePlayer() {
             if (e.data === ENDED) {
               playNextRef.current();
             } else if (e.data === PLAYING) {
-              // Video is confirmed playing — safe to unmute now.
+              if (isTransitioningRef.current) {
+                const savedTime = playbackTimeRef.current;
+                if (savedTime > 0) playerRef.current?.seekTo(savedTime, true);
+                isTransitioningRef.current = false;
+              }
               playerRef.current?.unMute();
               playerRef.current?.setVolume(100);
-              isTransitioningRef.current = false;
               setIsPlayingRef.current(true);
               setSkipMessage(null);
               setIsLoading(false);
             } else if (e.data === PAUSED && !isTransitioningRef.current) {
               setIsPlayingRef.current(false);
+              const t = playerRef.current?.getCurrentTime() ?? 0;
+              if (t > 0) setPlaybackTimeRef.current(t);
             }
           },
           onError(e) {
