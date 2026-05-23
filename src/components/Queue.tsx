@@ -268,6 +268,9 @@ export default function Queue() {
             </DragOverlay>
           </DndContext>
         )}
+        {queue.length > 0 && (
+          <p className="text-center text-gray-600 mt-3">Press "Ctrl and +/−" to zoom</p>
+        )}
       </div>
     </div>
   );
