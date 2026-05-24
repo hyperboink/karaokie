@@ -177,7 +177,7 @@ export default function NowPlaying() {
             <div className="wide:hidden absolute top-0 inset-x-0 pointer-events-none">
               <div className="px-4 pt-3 pb-5 bg-black [mask-image:linear-gradient(to_bottom,black_60%,transparent_100%)]">
                 <p className="text-white font-semibold text-sm truncate drop-shadow">{currentSong.title}</p>
-                <p className="text-gray-300 text-xs truncate mt-0.5 drop-shadow">
+                <p className="text-gray-300 text-[10px] truncate drop-shadow">
                   {currentSong.artist} · Singing:{' '}
                   <span className="text-yellow-400">{currentSong.singer}</span>
                 </p>

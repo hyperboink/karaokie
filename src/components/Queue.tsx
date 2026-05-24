@@ -210,7 +210,7 @@ export default function Queue() {
       {/* Header */}
       <div className="flex items-center justify-between px-4 landscape:px-3 py-2.5 landscape:py-1 border-b border-gray-800">
         <div className="relative inline-flex items-start">
-          <h2 className="text-base md:text-lg landscape:text-sm font-bold text-white leading-tight">Queue</h2>
+          <h2 className="text-sm md:text-xl landscape:text-sm font-bold text-white leading-tight">Queue</h2>
           {queue.length > 0 && (
             <span className="absolute -top-1.5 -right-4 bg-yellow-400 text-black text-[9px] font-bold min-w-[1.1rem] h-[1.1rem] px-0.5 rounded-full flex items-center justify-center leading-none">
               {queue.length > 99 ? '99+' : queue.length}
@@ -269,7 +269,7 @@ export default function Queue() {
           </DndContext>
         )}
       </div>
-      <p className="text-center text-gray-600 text-sm py-2 shrink-0 pb-4">Use Ctrl and +/− to zoom</p>
+      <p className="hidden md:block landscape:hidden text-center text-gray-600 text-xs py-2 shrink-0 pb-4">Use Ctrl and +/− to zoom</p>
     </div>
   );
 }
