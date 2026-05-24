@@ -2,6 +2,7 @@
 
 @theme {
   --font-display: "Inter", sans-serif;
+  --breakpoint-desk: 900px;
   --breakpoint-wide: 980px;
 }
 

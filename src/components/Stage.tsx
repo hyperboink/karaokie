@@ -84,17 +84,7 @@ function AppHeader() {
               <span className="hidden md:inline landscape:hidden">Skip</span>
             </button>
           </>
-        ) : (
-          <button
-            onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-2 bg-yellow-400 hover:bg-yellow-300 active:bg-yellow-500 text-black font-bold px-4 md:px-5 landscape:px-3 py-2 landscape:py-1 rounded-xl text-sm landscape:text-xs transition-all hover:scale-105 active:scale-95 shadow-md hover:shadow-yellow-400/50 hover:shadow-lg glow-pulse"
-          >
-            <svg className="w-4 h-4 landscape:w-3.5 landscape:h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
-            </svg>
-            <span className="hidden sm:inline landscape:hidden">Add Song</span>
-          </button>
-        )}
+        ) : null}
       </div>
     </div>
   );
@@ -175,9 +165,9 @@ export default function NowPlaying() {
             <YouTubePlayer />
             {/* Song info overlay — visible below 980px, hidden at wide+ */}
             <div className="wide:hidden absolute top-0 inset-x-0 pointer-events-none">
-              <div className="px-4 pt-3 pb-5 bg-black [mask-image:linear-gradient(to_bottom,black_60%,transparent_100%)]">
+              <div className="px-4 pt-3 pb-6 bg-black [mask-image:linear-gradient(to_bottom,black_80%,transparent_100%)]">
                 <p className="text-white font-semibold text-sm truncate drop-shadow">{currentSong.title}</p>
-                <p className="text-gray-300 text-xs truncate mt-0.5 drop-shadow">
+                <p className="text-gray-300 text-[10px] truncate drop-shadow">
                   {currentSong.artist} · Singing:{' '}
                   <span className="text-yellow-400">{currentSong.singer}</span>
                 </p>
