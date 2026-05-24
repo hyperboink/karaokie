@@ -15,20 +15,20 @@ export default function App() {
 
 
   return (
-    <div className="flex flex-col landscape:flex-row md:flex-row h-dvh bg-gray-950 text-white overflow-hidden">
+    <div className="flex flex-col landscape:flex-row desk:flex-row h-dvh bg-gray-950 text-white overflow-hidden">
 
       {/* Main stage */}
-      <div className={`flex-1 min-h-0 flex-col min-w-0 overflow-hidden pb-8 md:pb-0 landscape:pb-0 ${mobileTab === 'stage' && !showAddModal ? 'flex' : 'hidden landscape:flex md:flex'}`}>
+      <div className={`flex-1 min-h-0 flex-col min-w-0 overflow-hidden pb-8 desk:pb-0 landscape:pb-0 ${mobileTab === 'stage' && !showAddModal ? 'flex' : 'hidden landscape:flex desk:flex'}`}>
         <NowPlaying />
       </div>
 
       {/* Sidebar — queue or add-song panel */}
-      <div className={`flex-col md:flex md:w-80 md:shrink-0 landscape:flex landscape:w-64 landscape:shrink-0 landscape:border-l md:border-l border-gray-800 bg-gray-900/50 ${mobileTab === 'queue' || showAddModal ? 'flex flex-1 min-h-0 md:flex-none landscape:flex-none overflow-hidden' : 'hidden landscape:flex md:flex'}`}>
+      <div className={`flex-col desk:flex desk:w-80 desk:shrink-0 landscape:flex landscape:w-64 landscape:shrink-0 landscape:border-l desk:border-l border-gray-800 bg-gray-900/50 ${mobileTab === 'queue' || showAddModal ? 'flex flex-1 min-h-0 desk:flex-none landscape:flex-none overflow-hidden' : 'hidden landscape:flex desk:flex'}`}>
         {showAddModal ? <AddSongPanel /> : <Queue />}
       </div>
 
       {/* Mobile bottom tab bar — hidden in landscape (side-by-side layout takes over) */}
-      <nav className="md:hidden landscape:hidden shrink-0 relative flex items-stretch border-t border-gray-800 bg-gray-900 pb-safe">
+      <nav className="desk:hidden landscape:hidden shrink-0 relative flex items-stretch border-t border-gray-800 bg-gray-900 pb-safe">
         {/* Stage tab */}
         <button
           onClick={() => setMobileTab('stage')}

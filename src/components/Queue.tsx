@@ -219,7 +219,7 @@ export default function Queue() {
         </div>
         <button
           onClick={() => setShowAddModal(true)}
-          className="flex items-center gap-1.5 bg-yellow-400 hover:bg-yellow-300 active:bg-yellow-500 text-black font-bold text-xs md:text-sm landscape:text-[10px] px-3 md:px-4 landscape:px-2 py-1.5 md:py-2 landscape:py-1 rounded-lg md:rounded-xl transition-all hover:scale-105 active:scale-95 shadow-sm hover:shadow-yellow-400/40 hover:shadow-md"
+          className="hidden desk:flex landscape:flex items-center gap-1.5 bg-yellow-400 hover:bg-yellow-300 active:bg-yellow-500 text-black font-bold text-xs md:text-sm landscape:text-[10px] px-3 md:px-4 landscape:px-2 py-1.5 md:py-2 landscape:py-1 rounded-lg md:rounded-xl transition-all hover:scale-105 active:scale-95 shadow-sm hover:shadow-yellow-400/40 hover:shadow-md"
         >
           <svg className="w-4 h-4 landscape:w-3 landscape:h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
@@ -269,7 +269,7 @@ export default function Queue() {
           </DndContext>
         )}
       </div>
-      <p className="hidden md:block landscape:hidden text-center text-gray-600 text-xs py-2 shrink-0 pb-4">Use Ctrl and +/− to zoom</p>
+      <p className="hidden desk:block landscape:hidden text-center text-gray-600 text-xs py-2 shrink-0 pb-4">Use Ctrl and +/− to zoom</p>
     </div>
   );
 }
