@@ -55,11 +55,11 @@ function HelpTooltip() {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-8 z-50 w-64 bg-gray-900 border border-gray-700 rounded-xl p-3.5 shadow-2xl space-y-2.5">
+        <div className="absolute right-0 top-7 z-50 w-64 bg-gray-900 border border-gray-700 rounded-xl p-3.5 shadow-2xl space-y-2.5">
           <p className="text-gray-300 text-xs">Use <kbd className="px-1 py-0.5 bg-gray-700 rounded text-[10px]">Ctrl</kbd> and <kbd className="px-1 py-0.5 bg-gray-700 rounded text-[10px]">+</kbd> / <kbd className="px-1 py-0.5 bg-gray-700 rounded text-[10px]">−</kbd> to zoom</p>
           <div className="space-y-1">
-            <p className="text-gray-300 text-xs"><kbd className="px-1 py-0.5 bg-gray-700 rounded text-[10px]">Space</kbd> — Play / Pause</p>
-            <p className="text-gray-300 text-xs"><kbd className="px-1 py-0.5 bg-gray-700 rounded text-[10px]">→</kbd> — Skip song</p>
+            <p className="text-gray-300 text-xs"><kbd className="px-1 py-0.5 bg-gray-700 rounded text-[10px]">Space</kbd> - Play / Pause</p>
+            <p className="text-gray-300 text-xs"><kbd className="px-1 py-0.5 bg-gray-700 rounded text-[10px]">Left Arrow →</kbd> - Skip song</p>
           </div>
           <p className="text-gray-300 text-xs">
             Request a song{' '}
@@ -69,7 +69,7 @@ function HelpTooltip() {
               rel="noopener noreferrer"
               className="text-yellow-400 hover:text-yellow-300 underline"
             >
-              here
+               here
             </a>
             .
           </p>
@@ -84,7 +84,7 @@ function AppHeader() {
     useKaraokeStore();
 
   return (
-    <div className="flex items-center justify-between px-4 md:px-6 landscape:px-3 py-2.5 landscape:py-1 border-b border-gray-800 shrink-0 gap-3 landscape:gap-2">
+    <div className="flex items-center justify-between px-4 md:px-4 landscape:px-3 py-2.5 landscape:py-1 border-b border-gray-800 shrink-0 gap-3 landscape:gap-2">
       <img src="/images/logo.png" alt="Karaokie" className="h-6 md:h-7 landscape:h-5 w-auto shrink-0" />
 
       {currentSong && (
@@ -130,6 +130,7 @@ function AppHeader() {
               </svg>
               <span className="hidden md:inline landscape:hidden">Skip</span>
             </button>
+            <HelpTooltip />
           </>
         ) : null}
       </div>
@@ -149,7 +150,7 @@ function StatusBar() {
         {queue.length > 0 ? (
           <>
             <span className="text-gray-500 text-xs landscape:text-[9px] uppercase tracking-wider font-semibold shrink-0">Up next</span>
-            <span className="text-white text-xs md:text-sm landscape:text-[10px] font-medium truncate min-w-0">{queue[0].title}</span>
+            <span className="text-white text-xs landscape:text-[10px] font-medium truncate min-w-0">{queue[0].title}</span>
             <span className="text-gray-500 text-xs landscape:text-[9px] shrink-0">·</span>
             <span className="text-yellow-400/80 text-xs landscape:text-[9px] shrink-0">🎤<span className="hidden lg:inline"> {queue[0].singer}</span></span>
           </>
@@ -157,7 +158,7 @@ function StatusBar() {
           <>
             <EqBars />
             <span className="text-gray-500 text-xs landscape:text-[9px] uppercase tracking-wider font-semibold shrink-0">Now playing</span>
-            <span className="text-white text-xs md:text-sm landscape:text-[10px] font-medium truncate">{currentSong.title}</span>
+            <span className="text-white text-xs landscape:text-[10px] font-medium truncate">{currentSong.title}</span>
             <span className="hidden sm:inline text-gray-500 text-xs landscape:text-[9px] shrink-0">·</span>
             <span className="hidden sm:inline text-gray-400 text-xs landscape:text-[9px] truncate">{currentSong.artist}</span>
           </>
@@ -210,11 +211,6 @@ export default function NowPlaying() {
         <div className="flex-1 flex flex-col overflow-hidden">
           <div className="relative flex-1 w-full bg-black">
             <YouTubePlayer />
-            {/* Help button — top-right corner of stage */}
-            <div className="absolute top-2 right-2 z-10">
-              <HelpTooltip />
-            </div>
-
             {/* Song info overlay — visible below 980px, hidden at wide+ */}
             <div className="wide:hidden absolute top-0 inset-x-0 pointer-events-none">
               <div className="px-4 pt-3 pb-6 bg-black [mask-image:linear-gradient(to_bottom,black_80%,transparent_100%)]">
