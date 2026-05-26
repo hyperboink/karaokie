@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useKaraokeStore } from '../store/useKaraokeStore';
 import YouTubePlayer from './YouTubePlayer';
 import EqBars from './EqBars';
@@ -32,6 +32,53 @@ function useKeyboardShortcuts() {
 
 // Sub-components
 
+function HelpTooltip() {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [open]);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="w-6 h-6 rounded-full bg-black/50 border border-gray-600 text-gray-400 hover:text-white hover:border-gray-400 text-xs font-bold flex items-center justify-center transition-colors leading-none"
+      >
+        ?
+      </button>
+
+      {open && (
+        <div className="absolute right-0 top-8 z-50 w-64 bg-gray-900 border border-gray-700 rounded-xl p-3.5 shadow-2xl space-y-2.5">
+          <p className="text-gray-300 text-xs">Use <kbd className="px-1 py-0.5 bg-gray-700 rounded text-[10px]">Ctrl</kbd> and <kbd className="px-1 py-0.5 bg-gray-700 rounded text-[10px]">+</kbd> / <kbd className="px-1 py-0.5 bg-gray-700 rounded text-[10px]">−</kbd> to zoom</p>
+          <div className="space-y-1">
+            <p className="text-gray-300 text-xs"><kbd className="px-1 py-0.5 bg-gray-700 rounded text-[10px]">Space</kbd> — Play / Pause</p>
+            <p className="text-gray-300 text-xs"><kbd className="px-1 py-0.5 bg-gray-700 rounded text-[10px]">→</kbd> — Skip song</p>
+          </div>
+          <p className="text-gray-300 text-xs">
+            Request a song{' '}
+            <a
+              href="https://forms.gle/TLfvZ2DdA8LPgxoF7"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-yellow-400 hover:text-yellow-300 underline"
+            >
+              here
+            </a>
+            .
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function AppHeader() {
   const { currentSong, isPlaying, setIsPlaying, skipCurrent, setShowAddModal } =
     useKaraokeStore();
@@ -42,7 +89,7 @@ function AppHeader() {
 
       {currentSong && (
         <div className="hidden wide:block flex-1 text-center min-w-0 px-2">
-          <p className="text-white font-medium text-xs landscape:text-[10px] truncate">{currentSong.title}</p>
+          <p className="text-white font-medium text-xs md:text-sm landscape:text-[10px] truncate">{currentSong.title}</p>
           <p className="text-gray-400 text-[11px] landscape:text-[9px] truncate">
             {currentSong.artist} · Singing:{' '}
             <span className="text-yellow-400">{currentSong.singer}</span>
@@ -119,7 +166,7 @@ function StatusBar() {
 
       {/* Copyright */}
       <span className="text-gray-600 text-[10px] landscape:text-[8px] sm:text-xs shrink-0 text-center sm:text-right landscape:text-right sm:ml-auto landscape:ml-auto">
-        &copy; <a href="https://hyperboink.net/" className="hover:text-yellow-400 transition-colors">Hyperboink</a>. All Rights Reserved.
+        &copy; <a href="https://hyperboink.net/" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400 transition-colors">Hyperboink</a>. All Rights Reserved.
       </span>
     </div>
   );
@@ -163,10 +210,15 @@ export default function NowPlaying() {
         <div className="flex-1 flex flex-col overflow-hidden">
           <div className="relative flex-1 w-full bg-black">
             <YouTubePlayer />
+            {/* Help button — top-right corner of stage */}
+            <div className="absolute top-2 right-2 z-10">
+              <HelpTooltip />
+            </div>
+
             {/* Song info overlay — visible below 980px, hidden at wide+ */}
             <div className="wide:hidden absolute top-0 inset-x-0 pointer-events-none">
               <div className="px-4 pt-3 pb-6 bg-black [mask-image:linear-gradient(to_bottom,black_80%,transparent_100%)]">
-                <p className="text-white font-semibold text-sm truncate drop-shadow">{currentSong.title}</p>
+                <p className="text-white font-semibold text-xs md:text-sm landscape:text-xs truncate drop-shadow">{currentSong.title}</p>
                 <p className="text-gray-300 text-[10px] truncate drop-shadow">
                   {currentSong.artist} · Singing:{' '}
                   <span className="text-yellow-400">{currentSong.singer}</span>
