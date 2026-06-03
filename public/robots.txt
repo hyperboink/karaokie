@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://karaokie.vercel.app/sitemap.xml

@@ -64,6 +64,7 @@ export default function AddSongPanel() {
         <h2 className="text-base landscape:text-sm font-bold text-white">Add Song</h2>
         <button
           onClick={() => setShowAddModal(false)}
+          aria-label="Close"
           className="text-gray-400 hover:text-white active:text-white transition-colors p-1"
         >
           <svg className="w-5 h-5 landscape:w-3.5 landscape:h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -80,14 +81,16 @@ export default function AddSongPanel() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={`Search ${catalog.length} songs…`}
+            aria-label="Search songs"
             autoComplete="off"
             autoFocus
-            className="w-full bg-gray-800 border border-gray-700 rounded-xl px-3 py-2 landscape:py-1 pr-9 text-white text-sm landscape:text-xs placeholder-gray-500 focus:outline-none focus:border-yellow-400 transition-colors"
+            className="w-full bg-gray-800 border border-gray-700 rounded-xl px-3 py-2 landscape:py-1 pr-9 text-white text-sm landscape:text-xs placeholder-gray-400 focus:outline-none focus:border-yellow-400 transition-colors"
           />
           {query && (
             <button
               type="button"
               onClick={() => setQuery('')}
+              aria-label="Clear search"
               className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
             >
               <svg className="w-4 h-4 landscape:w-3 landscape:h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -97,7 +100,7 @@ export default function AddSongPanel() {
           )}
         </div>
         {allResults.length > 0 && (
-          <p className="text-gray-600 text-xs landscape:text-[9px] mt-1 landscape:mt-0.5">
+          <p className="text-gray-400 text-xs landscape:text-[9px] mt-1 landscape:mt-0.5">
             {allResults.length} result{allResults.length !== 1 ? 's' : ''}
           </p>
         )}
@@ -106,9 +109,9 @@ export default function AddSongPanel() {
       {/* Results */}
       <div className="flex-1 overflow-y-auto px-3 landscape:px-2 pb-3 landscape:pb-1">
         {query.trim() === '' ? (
-          <p className="text-gray-600 text-sm landscape:text-xs text-center mt-6 landscape:mt-2">Type to search</p>
+          <p className="text-gray-400 text-sm landscape:text-xs text-center mt-6 landscape:mt-2">Type to search</p>
         ) : allResults.length === 0 ? (
-          <p className="text-gray-600 text-sm landscape:text-xs text-center mt-6 landscape:mt-2">No songs found</p>
+          <p className="text-gray-400 text-sm landscape:text-xs text-center mt-6 landscape:mt-2">No songs found</p>
         ) : (
           <div className="space-y-0.5">
             {visible.map((entry) => (
@@ -122,7 +125,7 @@ export default function AddSongPanel() {
                   <p className="text-white text-sm landscape:text-[11px] font-medium truncate">{entry.title}</p>
                   <p className="text-gray-400 text-xs landscape:hidden truncate">{entry.artist}</p>
                 </div>
-                <span className="text-gray-600 text-xs landscape:text-[10px] shrink-0">{formatDuration(entry.duration)}</span>
+                <span className="text-gray-400 text-xs landscape:text-[10px] shrink-0">{formatDuration(entry.duration)}</span>
               </button>
             ))}
 

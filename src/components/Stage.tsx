@@ -49,6 +49,7 @@ function HelpTooltip() {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(o => !o)}
+        aria-label="Help and shortcuts"
         className="w-6 h-6 rounded-full bg-black/50 border border-gray-600 text-gray-400 hover:text-white hover:border-gray-400 text-xs font-bold flex items-center justify-center transition-colors leading-none"
       >
         ?
@@ -103,6 +104,7 @@ function AppHeader() {
           <>
             <button
               onClick={() => setIsPlaying(!isPlaying)}
+              aria-label={isPlaying ? 'Pause' : 'Play'}
               className="flex items-center gap-1.5 bg-gray-800 hover:bg-gray-700 active:bg-gray-600 text-white px-2.5 md:px-4 landscape:px-2 py-1.5 md:py-2 landscape:py-1 rounded-lg md:rounded-xl text-xs md:text-sm landscape:text-[10px] font-medium transition-colors"
             >
               {isPlaying ? (
@@ -123,6 +125,7 @@ function AppHeader() {
             </button>
             <button
               onClick={skipCurrent}
+              aria-label="Skip song"
               className="flex items-center gap-1.5 bg-gray-800 hover:bg-gray-700 active:bg-gray-600 text-white px-2.5 md:px-4 landscape:px-2 py-1.5 md:py-2 landscape:py-1 rounded-lg md:rounded-xl text-xs md:text-sm landscape:text-[10px] font-medium transition-colors"
             >
               <svg className="w-3.5 h-3.5 md:w-4 md:h-4 landscape:w-3 landscape:h-3 shrink-0" fill="currentColor" viewBox="0 0 24 24">
@@ -149,24 +152,24 @@ function StatusBar() {
       <div className="flex items-center justify-center md:justify-start landscape:justify-start gap-2 md:gap-3 landscape:gap-1.5 min-w-0 flex-1">
         {queue.length > 0 ? (
           <>
-            <span className="text-gray-500 text-xs landscape:text-[9px] uppercase tracking-wider font-semibold shrink-0">Up next</span>
+            <span className="text-gray-400 text-xs landscape:text-[9px] uppercase tracking-wider font-semibold shrink-0">Up next</span>
             <span className="text-white text-xs landscape:text-[10px] font-medium truncate min-w-0">{queue[0].title}</span>
-            <span className="text-gray-500 text-xs landscape:text-[9px] shrink-0">·</span>
+            <span className="text-gray-400 text-xs landscape:text-[9px] shrink-0">·</span>
             <span className="text-yellow-400/80 text-xs landscape:text-[9px] shrink-0">🎤<span className="hidden lg:inline"> {queue[0].singer}</span></span>
           </>
         ) : (
           <>
             <EqBars />
-            <span className="text-gray-500 text-xs landscape:text-[9px] uppercase tracking-wider font-semibold shrink-0">Now playing</span>
+            <span className="text-gray-400 text-xs landscape:text-[9px] uppercase tracking-wider font-semibold shrink-0">Now playing</span>
             <span className="text-white text-xs landscape:text-[10px] font-medium truncate">{currentSong.title}</span>
-            <span className="hidden sm:inline text-gray-500 text-xs landscape:text-[9px] shrink-0">·</span>
+            <span className="hidden sm:inline text-gray-400 text-xs landscape:text-[9px] shrink-0">·</span>
             <span className="hidden sm:inline text-gray-400 text-xs landscape:text-[9px] truncate">{currentSong.artist}</span>
           </>
         )}
       </div>
 
       {/* Copyright */}
-      <span className="text-gray-600 text-[10px] landscape:text-[8px] sm:text-xs shrink-0 text-center sm:text-right landscape:text-right sm:ml-auto landscape:ml-auto">
+      <span className="text-gray-400 text-[10px] landscape:text-[8px] sm:text-xs shrink-0 text-center sm:text-right landscape:text-right sm:ml-auto landscape:ml-auto">
         &copy; <a href="https://hyperboink.net/" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400 transition-colors">Hyperboink</a>. All Rights Reserved.
       </span>
     </div>
@@ -180,8 +183,8 @@ function EmptyStage() {
     <div className="flex-1 flex flex-col items-center justify-center text-center px-8 gap-4">
       <div className="text-7xl md:text-8xl opacity-30">🎵</div>
       <div>
-        <p className="text-gray-500 text-lg md:text-xl font-medium">Nothing playing</p>
-        <p className="text-gray-600 text-sm mt-1">Add songs to the queue to get started</p>
+        <p className="text-gray-400 text-lg md:text-xl font-medium">Nothing playing</p>
+        <p className="text-gray-400 text-sm mt-1">Add songs to the queue to get started</p>
       </div>
       <button
         onClick={() => setShowAddModal(true)}
