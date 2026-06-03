@@ -18,15 +18,7 @@ const nativeConsoleClear = console.clear.bind(console);
 
 function lockdown() {
   try {
-    document.documentElement.innerHTML = '';
-    document.open();
-    document.write('');
-    document.close();
-  } catch {
-    // ignore
-  }
-  try {
-    window.location.replace('about:blank');
+    window.location.replace('/blocked.html');
   } catch {
     // ignore
   }
