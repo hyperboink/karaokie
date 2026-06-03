@@ -121,7 +121,7 @@ function QueueRow({ item, idx, total, isDragOverlay = false }: QueueRowProps) {
 
       {/* Mobile + landscape — always-visible remove button */}
       <button
-        className="md:hidden landscape:flex p-2 landscape:p-1 text-gray-600 active:text-red-400 transition-colors rounded-lg"
+        className="md:hidden landscape:flex p-2 landscape:p-1 text-gray-400 active:text-red-400 transition-colors rounded-lg"
         onClick={() => removeFromQueue(item.id)}
         onPointerDown={(e) => e.stopPropagation()}
         title="Remove"
@@ -159,7 +159,7 @@ function EmptyQueue({ onAddSong }: { onAddSong: () => void }) {
     <div className="flex flex-col items-center justify-center h-48 text-center">
       <div className="text-5xl mb-3">🎤</div>
       <p className="text-gray-400 font-medium">Queue is empty</p>
-      <p className="text-gray-600 text-sm mt-1">Add songs to get the party started!</p>
+      <p className="text-gray-400 text-sm mt-1">Add songs to get the party started!</p>
       <button
         onClick={onAddSong}
         className="mt-4 text-yellow-400 hover:text-yellow-300 text-sm font-semibold transition-colors"
