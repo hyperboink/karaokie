@@ -20,18 +20,13 @@ export default function App() {
     <div className="flex flex-col landscape:flex-row desk:flex-row h-dvh bg-gray-950 text-white overflow-hidden">
 
       {/* Main stage */}
-      <main className={`flex-1 min-h-0 flex-col min-w-0 overflow-hidden pb-8 desk:pb-0 landscape:pb-0 ${mobileTab === 'stage' && !showAddModal ? 'flex' : 'hidden landscape:flex desk:flex'}`}>
+      <main className={`relative flex-1 min-h-0 flex-col min-w-0 overflow-hidden pb-8 desk:pb-0 landscape:pb-0 ${mobileTab === 'stage' && !showAddModal ? 'flex' : 'hidden landscape:flex desk:flex'}`}>
         <NowPlaying />
-      </main>
 
-      {/* Sidebar — queue, add-song panel, or history panel */}
-      <aside className={`relative flex-col desk:flex desk:w-80 desk:shrink-0 landscape:flex landscape:w-64 landscape:shrink-0 landscape:border-l desk:border-l border-gray-800 bg-gray-900/50 ${mobileTab === 'queue' || showAddModal || showHistory || showPinned ? 'flex flex-1 min-h-0 desk:flex-none landscape:flex-none overflow-hidden' : 'hidden landscape:flex desk:flex'}`}>
-        {showAddModal ? <AddSongPanel /> : showHistory ? <History /> : showPinned ? <Pinned /> : <Queue />}
-
-        {/* Toast — overlaps the sidebar header */}
+        {/* Toast — top of stage */}
         {toast && (
-          <div className="absolute top-0 left-0 right-0 pointer-events-none z-50 px-3 pt-2">
-            <div className="bg-gray-900 border border-yellow-400/30 text-white text-xs px-3 py-2 rounded-xl shadow-xl shadow-black/60 flex items-center gap-2 animate-fade-in-up w-full">
+          <div className="absolute top-4 left-1/2 -translate-x-1/2 pointer-events-none z-50 w-full max-w-sm px-4">
+            <div className="bg-gray-900 border border-yellow-400/30 text-white text-xs px-4 py-2.5 rounded-xl shadow-xl shadow-black/60 flex items-center gap-2 animate-fade-in-up">
               <svg className="w-3.5 h-3.5 text-yellow-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
@@ -39,6 +34,11 @@ export default function App() {
             </div>
           </div>
         )}
+      </main>
+
+      {/* Sidebar — queue, add-song panel, or history panel */}
+      <aside className={`flex-col desk:flex desk:w-80 desk:shrink-0 landscape:flex landscape:w-64 landscape:shrink-0 landscape:border-l desk:border-l border-gray-800 bg-gray-900/50 ${mobileTab === 'queue' || showAddModal || showHistory || showPinned ? 'flex flex-1 min-h-0 desk:flex-none landscape:flex-none overflow-hidden' : 'hidden landscape:flex desk:flex'}`}>
+        {showAddModal ? <AddSongPanel /> : showHistory ? <History /> : showPinned ? <Pinned /> : <Queue />}
       </aside>
 
       {/* Mobile bottom tab bar — hidden in landscape (side-by-side layout takes over) */}

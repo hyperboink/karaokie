@@ -23,7 +23,7 @@ function HistoryRow({ item }: { item: QueueItem }) {
       >
         <button
           onClick={() => addToQueue({ ...item, id: `${item.youtubeId}-${Date.now()}`, addedAt: Date.now() }, false)}
-          className="p-1.5 text-gray-400 hover:text-yellow-400 transition-colors rounded-lg hover:bg-gray-700"
+          className="p-1.5 text-yellow-400 bg-yellow-400/10 hover:bg-yellow-400/20 transition-colors rounded-lg"
           title="Add to queue again"
         >
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -33,7 +33,7 @@ function HistoryRow({ item }: { item: QueueItem }) {
       </div>
 
       <button
-        className="md:hidden p-1.5 text-gray-500 active:text-yellow-400 transition-colors rounded-lg"
+        className="md:hidden p-1.5 text-yellow-400 bg-yellow-400/10 active:bg-yellow-400/20 transition-colors rounded-lg"
         onClick={() => addToQueue({ ...item, id: `${item.youtubeId}-${Date.now()}`, addedAt: Date.now() }, false)}
         title="Add to queue again"
       >

@@ -50,6 +50,13 @@ export const useKaraokeStore = create<KaraokeStore>()(
       toast: null,
 
       addToQueue: (item, log = true) => {
+        const { queue } = get();
+        if (queue.length >= 5000) {
+          if (toastTimer) clearTimeout(toastTimer);
+          set({ toast: 'Queue is full (max 5000 songs)' });
+          toastTimer = setTimeout(() => set({ toast: null }), 3000);
+          return;
+        }
         if (toastTimer) clearTimeout(toastTimer);
         set((s) => ({
           queue: [...s.queue, item],
@@ -117,10 +124,11 @@ export const useKaraokeStore = create<KaraokeStore>()(
       togglePin: (item) =>
         set((s) => {
           const exists = s.pinned.some((p) => p.youtubeId === item.youtubeId);
+          if (!exists && s.pinned.length >= 2000) return s;
           return {
             pinned: exists
               ? s.pinned.filter((p) => p.youtubeId !== item.youtubeId)
-              : [...s.pinned, { ...item, addedAt: Date.now() }],
+              : [{ ...item, addedAt: Date.now() }, ...s.pinned],
           };
         }),
 

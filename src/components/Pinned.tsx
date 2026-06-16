@@ -53,7 +53,7 @@ function PinnedRow({ item, isDragOverlay = false }: { item: QueueItem; isDragOve
       >
         <button
           onClick={() => addToQueue({ ...item, id: `${item.youtubeId}-${Date.now()}`, addedAt: Date.now() }, false)}
-          className="p-1.5 text-gray-400 hover:text-yellow-400 transition-colors rounded-lg hover:bg-gray-700"
+          className="p-1.5 text-yellow-400 bg-yellow-400/10 hover:bg-yellow-400/20 transition-colors rounded-lg"
           title="Add to queue"
         >
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -62,11 +62,11 @@ function PinnedRow({ item, isDragOverlay = false }: { item: QueueItem; isDragOve
         </button>
         <button
           onClick={() => togglePin(item)}
-          className="p-1.5 text-yellow-400 hover:text-red-400 transition-colors rounded-lg hover:bg-gray-700"
-          title="Unpin"
+          className="p-1.5 text-gray-400 hover:text-red-400 hover:bg-gray-700 transition-colors rounded-lg"
+          title="Remove"
         >
-          <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5v6h2v-6h5v-2l-2-2z" />
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
       </div>
@@ -78,7 +78,7 @@ function PinnedRow({ item, isDragOverlay = false }: { item: QueueItem; isDragOve
       >
         <button
           onClick={() => addToQueue({ ...item, id: `${item.youtubeId}-${Date.now()}`, addedAt: Date.now() }, false)}
-          className="p-1.5 text-gray-500 active:text-yellow-400 transition-colors rounded-lg"
+          className="p-1.5 text-yellow-400 bg-yellow-400/10 active:bg-yellow-400/20 transition-colors rounded-lg"
           title="Add to queue"
         >
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -87,7 +87,7 @@ function PinnedRow({ item, isDragOverlay = false }: { item: QueueItem; isDragOve
         </button>
         <button
           onClick={() => togglePin(item)}
-          className="p-1.5 text-yellow-400 active:text-red-400 transition-colors rounded-lg"
+          className="p-1.5 text-yellow-400 bg-yellow-400/15 active:bg-yellow-400/25 transition-colors rounded-lg"
           title="Unpin"
         >
           <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
