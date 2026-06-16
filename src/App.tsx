@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import NowPlaying from './components/Stage';
 import Queue from './components/Queue';
 import AddSongPanel from './components/AddSongModal';
+import History from './components/History';
+import Pinned from './components/Pinned';
 import { useKaraokeStore } from './store/useKaraokeStore';
 
 export default function App() {
-  const { showAddModal, setShowAddModal, currentSong, queue, playNext } = useKaraokeStore();
+  const { showAddModal, setShowAddModal, showHistory, showPinned, currentSong, queue, playNext, toast } = useKaraokeStore();
   const [mobileTab, setMobileTab] = useState<'stage' | 'queue'>('stage');
 
   // Auto-start playback when a song enters the queue and nothing is playing
@@ -22,9 +24,21 @@ export default function App() {
         <NowPlaying />
       </main>
 
-      {/* Sidebar — queue or add-song panel */}
-      <aside className={`flex-col desk:flex desk:w-80 desk:shrink-0 landscape:flex landscape:w-64 landscape:shrink-0 landscape:border-l desk:border-l border-gray-800 bg-gray-900/50 ${mobileTab === 'queue' || showAddModal ? 'flex flex-1 min-h-0 desk:flex-none landscape:flex-none overflow-hidden' : 'hidden landscape:flex desk:flex'}`}>
-        {showAddModal ? <AddSongPanel /> : <Queue />}
+      {/* Sidebar — queue, add-song panel, or history panel */}
+      <aside className={`relative flex-col desk:flex desk:w-80 desk:shrink-0 landscape:flex landscape:w-64 landscape:shrink-0 landscape:border-l desk:border-l border-gray-800 bg-gray-900/50 ${mobileTab === 'queue' || showAddModal || showHistory || showPinned ? 'flex flex-1 min-h-0 desk:flex-none landscape:flex-none overflow-hidden' : 'hidden landscape:flex desk:flex'}`}>
+        {showAddModal ? <AddSongPanel /> : showHistory ? <History /> : showPinned ? <Pinned /> : <Queue />}
+
+        {/* Toast — overlaps the sidebar header */}
+        {toast && (
+          <div className="absolute top-0 left-0 right-0 pointer-events-none z-50 px-3 pt-2">
+            <div className="bg-gray-900 border border-yellow-400/30 text-white text-xs px-3 py-2 rounded-xl shadow-xl shadow-black/60 flex items-center gap-2 animate-fade-in-up w-full">
+              <svg className="w-3.5 h-3.5 text-yellow-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+              <span className="truncate">{toast}</span>
+            </div>
+          </div>
+        )}
       </aside>
 
       {/* Mobile bottom tab bar — hidden in landscape (side-by-side layout takes over) */}
