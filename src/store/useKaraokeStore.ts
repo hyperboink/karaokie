@@ -27,6 +27,7 @@ interface KaraokeStore {
   setShowHistory: (visible: boolean) => void;
   setShowPinned: (visible: boolean) => void;
   clearHistory: () => void;
+  removeFromHistory: (addedAt: number) => void;
   setToast: (msg: string | null) => void;
   startSong: (song: QueueItem) => void;
   togglePin: (item: QueueItem) => void;
@@ -53,7 +54,7 @@ export const useKaraokeStore = create<KaraokeStore>()(
         const { queue } = get();
         if (queue.length >= 5000) {
           if (toastTimer) clearTimeout(toastTimer);
-          set({ toast: 'Queue is full (max 5000 songs)' });
+          set({ toast: 'Queue is full - max 5000 songs' });
           toastTimer = setTimeout(() => set({ toast: null }), 3000);
           return;
         }
@@ -63,7 +64,7 @@ export const useKaraokeStore = create<KaraokeStore>()(
           history: log
             ? [{ ...item, addedAt: Date.now() }, ...s.history].slice(0, 500)
             : s.history,
-          toast: `Added "${item.title}" to queue`,
+          toast: `Added to queue - ${item.title}`,
         }));
         toastTimer = setTimeout(() => set({ toast: null }), 3000);
       },
@@ -119,6 +120,8 @@ export const useKaraokeStore = create<KaraokeStore>()(
       setShowHistory: (visible) => set({ showHistory: visible }),
       setShowPinned: (visible) => set({ showPinned: visible }),
       clearHistory: () => set({ history: [] }),
+      removeFromHistory: (addedAt) =>
+        set((s) => ({ history: s.history.filter((h) => h.addedAt !== addedAt) })),
       setToast: (msg) => set({ toast: msg }),
 
       togglePin: (item) =>
