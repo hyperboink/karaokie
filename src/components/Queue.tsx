@@ -23,12 +23,11 @@ import type { QueueItem } from '../types';
 interface QueueRowProps {
   item: QueueItem;
   idx: number;
-  total: number;
   isDragOverlay?: boolean;
 }
 
-function QueueRow({ item, idx, total, isDragOverlay = false }: QueueRowProps) {
-  const { removeFromQueue, moveUp, moveDown, currentSong, startSong } =
+function QueueRow({ item, idx, isDragOverlay = false }: QueueRowProps) {
+  const { removeFromQueue, currentSong, startSong, togglePin, pinned } =
     useKaraokeStore();
 
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
@@ -75,24 +74,12 @@ function QueueRow({ item, idx, total, isDragOverlay = false }: QueueRowProps) {
         onPointerDown={(e) => e.stopPropagation()}
       >
         <button
-          onClick={() => moveUp(item.id)}
-          disabled={idx === 0}
-          className="p-1.5 text-gray-400 hover:text-white disabled:opacity-20 disabled:cursor-not-allowed transition-colors rounded-lg hover:bg-gray-700"
-          title="Move up"
+          onClick={() => togglePin(item)}
+          className={`p-1.5 transition-colors rounded-lg ${pinned.some((p) => p.youtubeId === item.youtubeId) ? 'text-yellow-400 bg-yellow-400/15 hover:bg-yellow-400/25' : 'text-gray-400 hover:text-yellow-400 hover:bg-gray-700'}`}
+          title={pinned.some((p) => p.youtubeId === item.youtubeId) ? 'Unpin' : 'Pin'}
         >
-          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-          </svg>
-        </button>
-
-        <button
-          onClick={() => moveDown(item.id)}
-          disabled={idx === total - 1}
-          className="p-1.5 text-gray-400 hover:text-white disabled:opacity-20 disabled:cursor-not-allowed transition-colors rounded-lg hover:bg-gray-700"
-          title="Move down"
-        >
-          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5v6h2v-6h5v-2l-2-2z" />
           </svg>
         </button>
 
@@ -176,7 +163,7 @@ const DRAG_ACTIVATION_DISTANCE = 6; // px before a pointer move becomes a drag
 const DROP_ANIMATION_DURATION = 180; // ms
 
 export default function Queue() {
-  const { queue, reorderQueue, setShowAddModal } = useKaraokeStore();
+  const { queue, reorderQueue, setShowAddModal, setShowHistory, setShowPinned } = useKaraokeStore();
   const [activeId, setActiveId] = useState<string | null>(null);
 
   const sensors = useSensors(
@@ -245,7 +232,7 @@ export default function Queue() {
             <SortableContext items={queue.map((q) => q.id)} strategy={verticalListSortingStrategy}>
               <div className="space-y-1.5 md:space-y-2 landscape:space-y-1">
                 {queue.map((item, idx) => (
-                  <QueueRow key={item.id} item={item} idx={idx} total={queue.length} />
+                  <QueueRow key={item.id} item={item} idx={idx} />
                 ))}
               </div>
             </SortableContext>
@@ -261,13 +248,53 @@ export default function Queue() {
                 <QueueRow
                   item={activeItem}
                   idx={queue.findIndex((q) => q.id === activeId)}
-                  total={queue.length}
                   isDragOverlay
                 />
               )}
             </DragOverlay>
           </DndContext>
         )}
+      </div>
+
+      {/* Pinned + History buttons — bottom of sidebar */}
+      <div className="shrink-0 px-3 md:px-4 landscape:px-2 pt-2.5 landscape:pt-1.5 border-t border-gray-800 flex gap-2">
+        <button
+          onClick={() => setShowPinned(true)}
+          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 landscape:py-1.5 rounded-xl bg-gray-800/50 hover:bg-gray-800 border border-gray-700/40 hover:border-yellow-400/30 text-gray-400 hover:text-yellow-400 transition-all text-[10px] font-medium group"
+        >
+          <svg className="w-4 h-4 landscape:w-3 landscape:h-3 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5v6h2v-6h5v-2l-2-2z" />
+          </svg>
+          <span>Pinned</span>
+        </button>
+        <button
+          onClick={() => setShowHistory(true)}
+          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 landscape:py-1.5 rounded-xl bg-gray-800/50 hover:bg-gray-800 border border-gray-700/40 hover:border-gray-500/50 text-gray-400 hover:text-white transition-all text-[10px] font-medium group"
+        >
+          <svg className="w-4 h-4 landscape:w-3 landscape:h-3 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>History</span>
+        </button>
+      </div>
+
+      {/* Donation section */}
+      <div className="shrink-0 px-3 md:px-4 landscape:px-2 pb-3 landscape:pb-2 pt-2">
+        <a
+          href="https://ko-fi.com/hyperboink"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-3 px-3 py-2.5 landscape:py-1.5 rounded-xl border border-dashed border-gray-600 hover:border-yellow-400/50 transition-all group"
+        >
+          <div className="w-7 h-7 landscape:w-5 landscape:h-5 rounded-lg bg-gray-800 flex items-center justify-center shrink-0 text-sm landscape:text-xs">☕</div>
+          <div className="flex-1 min-w-0">
+            <p className="text-gray-300 text-[11px] landscape:text-[9px] font-semibold leading-tight group-hover:text-white transition-colors">Support Karaokie</p>
+            <p className="text-gray-600 text-[10px] landscape:text-[9px] leading-tight mt-0.5">Buy me a coffee ✨</p>
+          </div>
+          <svg className="w-3.5 h-3.5 text-gray-600 group-hover:text-yellow-400 shrink-0 group-hover:translate-x-0.5 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
       </div>
     </div>
   );
